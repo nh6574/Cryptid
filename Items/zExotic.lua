@@ -238,7 +238,7 @@ local speculo = {
                         return true
                     end}))
                 card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                return {calculated = true}
+                return nil, true
             end
             return
         end
@@ -278,7 +278,7 @@ local redeo = {
             if ante_mod < 0 then
                 ease_ante(ante_mod)
             end
-            return {calculated = true}
+            return nil, true
         end
 	end
 }
@@ -402,7 +402,7 @@ local crustulum = {
     	if context.reroll_shop and not context.blueprint then
         	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-		return {calculated = true}
+		return nil, true
 		end
 	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
@@ -833,7 +833,7 @@ local stella_mortis = {
                 if not (context.blueprint_card or self).getting_sliced then
                     card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
                 end
-                return {calculated = true}, true
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
@@ -965,18 +965,6 @@ return {name = "Exotic Jokers",
                 ed(mod,x)
                 for i = 1, #G.jokers.cards do
                     local effects = G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
-                    if effects and effects.joker_repetitions then
-                        rep_list = effects.joker_repetitions
-                        for z=1, #rep_list do
-                            if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-                                for r=1, rep_list[z].repetitions do
-                                    card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                                    if percent then percent = percent+percent_delta end
-                                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod, retrigger_joker = true})
-                                end
-                            end
-                        end
-                    end
                 end
             end
         end,
