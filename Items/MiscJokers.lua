@@ -868,7 +868,7 @@ local big_cube = {
         return {vars = {center.ability.extra.x_chips}}
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and not context.before and not context.after then
+        if context.cardarea == G.jokers and context.joker_main then
             return {
                 message = "X"..number_format(card.ability.extra.x_chips),
                 Xchip_mod = card.ability.extra.x_chips,

@@ -547,7 +547,7 @@ local boredom = {
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card.ability.name ~= 'cry-Boredom' then
 			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
 					message = localize('k_again_ex'),
